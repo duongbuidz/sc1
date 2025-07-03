@@ -1,5 +1,6 @@
 module RISCV_Single_Cycle (
-    input clk, rst_n
+    input clk, rst_n,
+    output [31:0] Instruction_out_top // Thêm cổng đầu ra
 );
     wire [31:0] instruction;
     wire [6:0] op;
@@ -24,6 +25,7 @@ module RISCV_Single_Cycle (
     assign funct3 = instruction[14:12];
     assign funct7 = instruction[31:25];
     assign op = instruction[6:0];
+    assign Instruction_out_top = instruction; // Gán trực tiếp từ instruction
 
     PC PC_inst (
         .clk(clk),
@@ -50,6 +52,7 @@ module RISCV_Single_Cycle (
         .Branch(Branch),
         .Jump(Jump),
         .branch_taken(branch_taken),
+        .op(op), // Truyền op vào NextPCSel
         .next_PC(next_PC)
     );
 
